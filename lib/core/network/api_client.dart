@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../constants/api_endpoints.dart';
-import 'network_exceptions.dart';
+import '../errors/network_exceptions.dart';
 
 class ApiClient {
   final Dio dio;
