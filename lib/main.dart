@@ -1,25 +1,23 @@
-import 'dart:io';
-
+import 'app/app.dart';
 import 'di/injector.dart';
+import 'di/bloc_observer.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
-import 'data/models/cart_item_model.dart';
-import 'presentation/routes/app_routes.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'data/models/cart_item/cart_item_model.dart';
+import 'package:app/data/models/product/product_model.dart';
 
 void main() async {
-  final path = Directory.systemTemp.path;
-  Hive.init(path);
+  WidgetsFlutterBinding.ensureInitialized();
+  final directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
   Hive.registerAdapter(CartItemModelAdapter());
-  await Hive.openBox<CartItemModel>('cart');
-  setupDependencies();
+  Hive.registerAdapter(ProductModelAdapter());
+  Hive.registerAdapter(RatingModelAdapter());
+  await Hive.openBox<CartItemModel>(CartItemModel.hiveBox);
+  if (kDebugMode) Bloc.observer = DebugBlocObserver();
+  configureDependencies();
   runApp(FakeStoreApp());
-}
-
-class FakeStoreApp extends StatelessWidget {
-  const FakeStoreApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(title: 'ShopEase', theme: ThemeData(primarySwatch: Colors.blue), routerConfig: router);
-  }
 }

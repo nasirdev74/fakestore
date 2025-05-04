@@ -1,8 +1,10 @@
-import '../../domain/entities/product.dart';
-import '../../domain/entities/category.dart';
-import '../../domain/repositories/product_repository.dart';
-import '../datasources/remote/product_remote_datasource.dart';
+import 'package:injectable/injectable.dart';
+import 'package:app/domain/entities/product.dart';
+import 'package:app/domain/entities/category.dart';
+import 'package:app/domain/repositories/product_repository.dart';
+import 'package:app/data/datasources/remote/product_remote_datasource.dart';
 
+@Injectable(as: ProductRepository)
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
 
